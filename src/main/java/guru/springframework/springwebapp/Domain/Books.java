@@ -1,6 +1,7 @@
 package guru.springframework.springwebapp.Domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,6 +12,17 @@ public class Books {
     private Long iD;
     private String title;
     private String isbn;
+    @ManyToMany
+    @JoinTable(name ="authors_books",joinColumns = @JoinColumn(name = "book_id"),inverseJoinColumns = @JoinColumn(name="author_id"))
+    private Set<Author> authors = new HashSet<>();
+
+    public Set<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(Set<Author> authors) {
+        this.authors = authors;
+    }
 
     @Override
     public String toString() {
@@ -34,10 +46,6 @@ public class Books {
     public int hashCode() {
         return Objects.hash(iD);
     }
-
-    @ManyToMany
-    @JoinTable(name ="authors_books",joinColumns = @JoinColumn(name = "book_id"),inverseJoinColumns = @JoinColumn(name="author_id"))
-    private Set<Author> authors;
 
     public String getTitle() {
         return title;
@@ -63,10 +71,10 @@ public class Books {
         this.isbn = isbn;
     }
 
-    public Books(String title, String isbn,Set<Author> authors) {
+    public Books(String title, String isbn) {
         this.title = title;
         this.isbn = isbn;
-        this.authors = authors;
+
     }
 
 
